@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workday Time Entry Importer</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="../features/appearance/appearance.css">
+</head>
+<body>
+<div class="popup-wrap">
+
+  <!-- Header (always visible) -->
+  <div class="header">
+    <div class="header-left">
+      <span class="header-mark"><img class="header-workday-icon" src="../assets/workday-icon.png" alt="Workday"></span>
+      <span class="header-title">Workday Timesheet Importer</span>
+    </div>
+  </div>
+
+  <!-- View: Main -->
+  <div class="views" id="oai-views">
+  <div id="v-main" class="view-pane">
+    <div class="sections">
+
+      <div class="section-group">
+        <div class="group-label">Resources</div>
+        <button class="nav-item" id="downloadExampleBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span>Download Example</span>
+        </button>
+        <button class="nav-item" id="downloadBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download Template</span>
+        </button>
+      </div>
+
+      <div class="section-group">
+        <div class="group-label">Data</div>
+        <button class="nav-item" id="oai-data-btn" type="button" aria-controls="v-data">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 12a9 3 0 0 0 5 2.69"/><path d="M21 9.3V5"/><path d="M3 5v14a9 3 0 0 0 6.47 2.88"/><path d="M12 12v4h4"/><path d="M13 20a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L12 16"/></svg>
+          <span>View saved Workday data</span>
+          <svg class="oai-data-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="section-group">
+        <div class="group-label">Appearance</div>
+        <div id="oai-appearance-widget"></div>
+      </div>
+
+      <div class="section-group">
+        <div class="group-label">Preferences</div>
+        <!-- Hidden (not removed) on purpose: Default to Unassigned is a poor experience in Workday. See CLAUDE.md. -->
+        <label class="nav-item oai-pref-row oai-pref-row--wrap" for="oai-timenotes-pref" hidden>
+          <span class="oai-pref-text">Default to Unassigned,<br>Fill Time/Notes Only</span>
+          <span class="oai-warn" data-tip="Warning this is a poor user experience" aria-label="Warning this is a poor user experience" role="img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          </span>
+          <span class="oai-switch">
+            <input type="checkbox" id="oai-timenotes-pref">
+            <span class="oai-switch-track"><span class="oai-switch-thumb"></span></span>
+          </span>
+        </label>
+        <label class="nav-item oai-pref-row" for="oai-autodefault-pref">
+          <span>Auto-match projects and tasks</span>
+          <span class="oai-switch">
+            <input type="checkbox" id="oai-autodefault-pref">
+            <span class="oai-switch-track"><span class="oai-switch-thumb"></span></span>
+          </span>
+        </label>
+        <label class="nav-item oai-pref-row oai-fallback-row" for="oai-default1-pref">
+          <span>1<sup>st</sup> default</span>
+          <span class="oai-fallback-value">Open Code Pending</span>
+          <span class="oai-switch">
+            <input type="checkbox" id="oai-default1-pref">
+            <span class="oai-switch-track"><span class="oai-switch-thumb"></span></span>
+          </span>
+        </label>
+        <label class="nav-item oai-pref-row oai-fallback-row" for="oai-default2-pref">
+          <span>2<sup>nd</sup> default</span>
+          <span class="oai-fallback-value">Unassigned</span>
+          <span class="oai-switch">
+            <input type="checkbox" id="oai-default2-pref">
+            <span class="oai-switch-track"><span class="oai-switch-thumb"></span></span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div><!-- /#v-main -->
+  <div id="v-data" class="view-pane view-pane--data" inert>
+    <div class="data-top">
+        <button class="back-btn" id="oai-data-back" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg><span>Back</span></button>
+    <span class="data-asof" id="oai-data-asof" hidden></span>
+    </div>
+    <div class="data-filter-row" id="oai-data-filter-row" hidden>
+      <input class="data-filter" id="oai-data-filter" type="search" placeholder="Filter by project or task" aria-label="Filter by project or task" autocomplete="off">
+    </div>
+    <div class="data-expand-row" id="oai-data-expand-row" hidden>
+      <div class="data-counts" id="oai-data-counts" aria-live="polite"></div>
+      <div class="data-actions">
+        <button type="button" class="data-expand-btn" id="oai-data-expand-all">Expand</button>
+        <button type="button" class="data-expand-btn" id="oai-data-collapse-all">Collapse</button>
+      </div>
+    </div>
+    <div class="data-list" id="oai-data-list"></div>
+  </div><!-- /#v-data -->
+  </div><!-- /.views -->
+
+    <div class="footer">
+      <a class="footer-review" href="https://chromewebstore.google.com/detail/openair-timesheet-importe/ageeabfdmemlbmgdgeffgknffiapenbl" target="_blank" rel="noopener" title="Leave a review on the Chrome Web Store">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span>leave a review</span>
+      </a>
+      <div class="footer-right">
+        <span class="footer-github">
+          <span class="footer-dev-label">developed by q hoang</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.605-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </span>
+      </div>
+    </div>
+  </div><!-- /.popup-wrap -->
+
+  <script src="../features/appearance/appearance.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

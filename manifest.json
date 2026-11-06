@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Workday Time Entry Importer",
+  "version": "1.0.0",
+  "description": "Drag-and-drop your weekly Excel timesheet directly into Workday Enter Time.",
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Workday Time Entry Importer",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://wd12.myworkday.com/connorgp/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://wd12.myworkday.com/connorgp/*"],
+      "js": ["lib/workday-dates.js", "lib/xlsx.full.min.js", "gifs.js", "content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["template.xlsx", "example.xlsx", "assets/*"],
+      "matches": ["https://wd12.myworkday.com/*"]
+    }
+  ]
+}

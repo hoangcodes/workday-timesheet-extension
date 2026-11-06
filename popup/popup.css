@@ -1,0 +1,532 @@
+/* popup.css - OpenAir Timesheet Importer
+   Design tokens match Suitely pattern; accent is #44536B (brand colour). */
+
+/* Design tokens */
+:root {
+  --accent:      #44536B;
+  --accent-dark: #303d50;
+  --bg-page:     #f7f7f8;
+  --bg-surface:  #ffffff;
+  --bg-hover:    #fafafa;
+  --border:      #ebebeb;
+  --divider:     #f2f2f2;
+  --text-1:      #111111;
+  --text-2:      #3d3d3d;
+  --text-3:      #5c5c5c;
+  --text-4:      #999999;
+  --text-arrow:  #cccccc;
+}
+
+/* Dark (mode value "classic-dark") — deep violet-charcoal; matches the on-page UI */
+body.oai-mode-classic-dark {
+  color-scheme: dark;
+  --bg-page:     #1a1a24;
+  --bg-surface:  #252530;
+  --bg-hover:    #2e2e3e;
+  --border:      #3a3a4a;
+  --divider:     #2a2a38;
+  --text-1:      #f4f0ff;
+  --text-2:      #d4cce6;
+  --text-3:      #c3bdd6;
+  --text-4:      #837b9b;
+  --text-arrow:  #655d7a;
+}
+
+/* Cool (mode value "dark") — slate blue; matches the on-page UI */
+body.oai-mode-dark {
+  color-scheme: dark;
+  --bg-page:     #0f172a;
+  --bg-surface:  #1e293b;
+  --bg-hover:    #253047;
+  --border:      #334155;
+  --divider:     #1f2b3e;
+  --text-1:      #eaf4ff;
+  --text-2:      #c9dcef;
+  --text-3:      #b6cade;
+  --text-4:      #7892ad;
+  --text-arrow:  #5b7591;
+}
+
+/* Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Root */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--text-1);
+  background: var(--bg-page);
+  min-height: 200px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Popup wrap */
+.popup-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  flex: none;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 12px 12px 11px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.header-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header-workday-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+.header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+}
+
+/* View system */
+.view { display: none; flex-direction: column; }
+.view.is-active { display: flex; }
+
+/* Sections layout */
+.sections {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-group {
+  background: var(--bg-surface);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.group-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: 0.02em;
+  padding: 10px 14px 6px;
+}
+
+/* Nav items */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-top: 1px solid var(--divider);
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease;
+  text-decoration: none;
+  width: 100%;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+}
+
+.nav-item:hover { background: var(--bg-hover); }
+
+.nav-item span {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  flex: 1;
+}
+
+.nav-item .arrow { color: var(--text-arrow); flex-shrink: 0; }
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footer-github {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-3);
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 11px;
+  transition: color 0.12s, background 0.12s;
+}
+
+.footer-github:hover {
+  color: var(--text-1);
+  background: var(--divider);
+}
+
+.footer-dev-label {
+  font-size: 11px;
+  color: var(--text-3);
+  user-select: none;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-review {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-3);
+  text-decoration: none;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.footer-review:hover {
+  color: var(--text-1);
+  background: var(--divider);
+}
+
+/* Keep the star icon and the label on the same vertical centre-line. */
+.footer-review span,
+.footer-github span { line-height: 1; }
+.footer-review svg,
+.footer-github svg { display: block; flex-shrink: 0; }
+
+/* Preferences: toggle row + switch (selectors are scoped under .oai-pref-row so they
+   out-specify the global `.nav-item span { flex: 1 }` rule and keep the switch sized). */
+.oai-pref-row {
+  cursor: pointer;
+  gap: 10px;
+}
+/* Long label: smaller text that wraps inside the row instead of overflowing. */
+.oai-pref-row--wrap {
+  align-items: center;
+}
+.oai-pref-row.oai-pref-row--wrap > span:first-child {
+  font-size: 12.5px;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+/* Indented sub-option (Autofill lives under "Time and Notes only"). */
+.oai-pref-row--sub {
+  padding-left: 30px;
+}
+.oai-pref-row--sub > span:first-child {
+  color: var(--text-2);
+}
+/* Greyed out + non-interactive when the parent toggle makes it irrelevant. */
+.oai-pref-row--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.oai-pref-row > span:first-child {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  flex: 1;
+}
+.oai-pref-row .oai-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.oai-pref-row .oai-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+.oai-pref-row .oai-switch-track {
+  display: inline-block;
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--border);
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.oai-pref-row .oai-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.oai-pref-row .oai-switch input:checked + .oai-switch-track {
+  background: var(--accent);
+}
+.oai-pref-row .oai-switch input:checked + .oai-switch-track .oai-switch-thumb {
+  transform: translateX(14px);
+}
+.oai-pref-row .oai-switch input:focus-visible + .oai-switch-track {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Dark & Cool modes: outline the ON track so a dark accent (e.g. Nam Blue) reads on the dark bg. */
+body.oai-mode-classic-dark .oai-pref-row .oai-switch input:checked + .oai-switch-track,
+body.oai-mode-dark .oai-pref-row .oai-switch input:checked + .oai-switch-track {
+  outline: 1.5px solid rgba(255, 255, 255, 0.7);
+  outline-offset: -1.5px;
+}
+
+/* Preference warning icon + instant custom tooltip */
+.oai-pref-row { position: relative; }
+.oai-pref-row .oai-pref-text { flex: 0 1 auto !important; }
+.oai-pref-row .oai-warn { display: inline-flex; align-items: center; flex: 0 0 auto !important; margin-right: auto; color: #b45309; cursor: help; }
+.oai-warn svg { display: block; }
+.oai-warn::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 14px;
+  top: calc(100% - 4px);
+  width: max-content;
+  max-width: 290px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+.oai-warn:hover::after { opacity: 1; }
+
+/* Views: main and "saved data" slide horizontally between the fixed header and footer. */
+.views { position: relative; overflow: hidden; }
+.view-pane { transition: transform .3s ease, opacity .3s ease; }
+.view-pane--data { position: absolute; inset: 0; overflow-y: auto; scrollbar-gutter: stable; transform: translateX(100%); opacity: 0; background: var(--bg-page); padding: 12px; }
+.views.is-data #v-main { transform: translateX(-100%); opacity: 0; }
+.views.is-data .view-pane--data { transform: translateX(0); opacity: 1; }
+.back-btn {
+  display: inline-flex; align-items: center; gap: 5px; line-height: 1;
+  background: none; border: 1px solid var(--text-3); padding: 5px 11px 5px 7px; border-radius: 7px;
+  font-family: inherit; font-size: 13px; font-weight: 500; color: var(--text-1); cursor: pointer;
+}
+.back-btn:hover { background: var(--divider); color: var(--text-1); }
+.back-btn svg { display: block; flex: none; position: relative; top: 1px; } /* text's visual centre sits ~1px below its line box centre */
+.back-btn span { line-height: 15px; height: 15px; display: block; }
+@media (prefers-reduced-motion: reduce) { .view-pane { transition: none; } }
+
+
+.data-list { margin-top: 8px; }
+.data-empty { padding: 14px 4px; font-size: 13px; line-height: 1.45; color: var(--text-2); }
+
+.data-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.data-asof { font-size: 11px; color: var(--text-2); white-space: nowrap; }
+.data-asof[hidden] { display: none; }
+.data-group { margin-top: 8px; padding: 9px 11px 7px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; }
+.data-group:first-child { margin-top: 2px; }
+.data-group-head { font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.3; padding: 2px 2px 4px; overflow-wrap: anywhere; }
+.data-row { display: flex; gap: 8px; padding: 3px 2px; font-size: 12px; line-height: 1.35; color: var(--text-1); }
+.data-num { flex: 0 0 22px; text-align: right; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.data-label { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+
+.data-filter-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.data-filter-row[hidden] { display: none; }
+.data-filter {
+  flex: 1 1 auto; min-width: 0; box-sizing: border-box;
+  padding: 6px 9px; font-family: inherit; font-size: 13px; color: var(--text-1);
+  background: var(--bg-surface); border: 1px solid var(--border); border-radius: 7px; outline: none;
+}
+.data-filter:focus { border-color: var(--text-3); }
+.data-counts { flex: none; font-size: 11px; line-height: 1.3; color: var(--text-2); text-align: right; white-space: nowrap; }
+
+/* "View saved Workday data" row: icon, label and chevron share one vertical centre line. */
+#oai-data-btn { align-items: center; }
+#oai-data-btn > svg { display: block; flex: none; margin: 0; }
+#oai-data-btn > span { line-height: 1; display: flex; align-items: center; }
+
+/* "leave a review": lowercase text sits slightly below its line-box centre, so drop the star 1px to match. */
+.footer-review { align-items: center; line-height: 1; }
+.footer-review svg { margin: 1px 0 0; }
+.footer-review span { display: block; padding: 0; }
+
+.data-expand-row { display: flex; justify-content: flex-end; gap: 6px; margin-top: 6px; }
+.data-expand-row[hidden] { display: none; }
+.data-expand-btn { background: none; border: 1px solid var(--text-3); border-radius: 5px; padding: 2px 8px; font: inherit; font-size: 11px; color: var(--text-2); cursor: pointer; }
+.data-expand-btn:hover { background: var(--divider); color: var(--text-1); }
+.data-toggle { display: flex; align-items: center; gap: 5px; width: 100%; background: none; border: none; padding: 2px 2px 4px; font: inherit; font-size: 13px; font-weight: 500; color: var(--text-2); cursor: pointer; text-align: left; }
+.data-toggle:hover { color: var(--text-1); }
+.data-toggle-count { line-height: 14px; }
+.data-toggle-chevron { flex: none; display: block; }
+.data-toggle[aria-expanded="true"] .data-toggle-chevron { transform: rotate(180deg); }
+.data-toggle-rule { flex: 1 1 auto; height: 1px; background: var(--border); margin-left: 4px; }
+
+.data-phase { margin: 8px 0 2px; padding-left: 2px; font-size: 11.5px; font-weight: 600; color: var(--text-2); letter-spacing: 0.01em; overflow-wrap: anywhere; }
+.data-toggle-rule { background: var(--text-3); opacity: 0.45; }
+
+/* Saved-data view: same font stack as the rest of the popup, sizes aligned with the main view. */
+#v-data, #v-data button, #v-data input { font-family: inherit; }
+.data-stack { flex: none; display: flex; flex-direction: column; gap: 4px; }
+.data-stack .data-expand-btn { width: 100%; text-align: center; font-family: inherit; font-size: 12px; }
+.data-expand-row { display: block; margin-top: 8px; }
+.data-counts { text-align: left; font-size: 12px; color: var(--text-2); font-weight: 500; }
+.data-label, .data-row { font-size: 13px; }
+.data-num { font-size: 12px; }
+.data-group-head { font-size: 12px; }
+.data-asof { font-size: 12px; }
+
+/* One reusable control border for the back button, expand/collapse buttons, filter box and project cards.
+   Derived from --text-3 so Light, Dark and Cool all follow. */
+body { --ctl-border: color-mix(in srgb, var(--text-3) 50%, transparent); }
+.back-btn, .data-expand-btn, .data-filter, .data-group { border: 1px solid var(--ctl-border); }
+.data-filter:focus { border-color: var(--text-3); }
+.data-asof { text-align: right; line-height: 1.35; }
+.data-asof strong { font-weight: 700; }
+
+/* "Default to Unassigned" is hidden (poor UX in Workday); display:flex on .nav-item would otherwise beat [hidden]. */
+.oai-pref-row[hidden] { display: none !important; }
+
+/* Default rows: same size as the auto-match row. Label left, fixed choice, then the (disabled) switch at the right end. */
+.oai-fallback-row { cursor: pointer; align-items: center; }
+.oai-pref-row.oai-fallback-row > span:first-child { flex: 1; }
+.oai-pref-row.oai-fallback-row > .oai-fallback-value {
+  flex: 0 0 auto; display: block; font-size: 12px; font-weight: 500; line-height: 1; color: var(--text-2);
+}
+
+/* Light indent so Default 1 / Default 2 read as belonging to "Auto-match projects and tasks". */
+.oai-fallback-row { padding-left: 26px; }
+
+/* Brief shake when the last active default is refused. */
+@keyframes oai-nudge { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+.oai-pref-row--nudge { animation: oai-nudge 0.25s ease; }
+
+/* Equal row height across Resources/Data/Appearance/Preferences: the tallest control (20px switch)
+   + 9px padding top/bottom + 1px divider. Without this, rows with only text/icons are shorter. */
+.nav-item, .oai-appear-row { min-height: 39px; }
+
+/* Counts left, Expand/Collapse at the end of the same row, all centred on one line. */
+.data-expand-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.data-expand-row[hidden] { display: none; }
+.data-actions { flex: none; display: flex; align-items: center; gap: 6px; }
+.data-actions .data-expand-btn { font-family: inherit; font-size: 12px; line-height: 1; padding: 4px 8px; }
+.data-counts { line-height: 1; }
+/* Even gaps above and below the filter bar. */
+.data-filter-row { margin-top: 8px; }
+
+/* Expand / Collapse: hyperlink-style text buttons. */
+.data-actions { gap: 12px; }
+.data-actions .data-expand-btn,
+.data-actions .data-expand-btn:hover {
+  background: none; border: none; border-radius: 0; padding: 0;
+  font-family: inherit; font-size: 12px; line-height: 1; font-weight: 500;
+  color: var(--accent); text-decoration: underline; text-underline-offset: 2px; cursor: pointer;
+}
+.data-actions .data-expand-btn:hover { text-decoration-thickness: 2px; }
+.data-actions .data-expand-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+/* Default 1/2 values match the unselected Light/Dark/Cool labels in Appearance: 13px, regular weight, --text-2. */
+.oai-pref-row.oai-fallback-row > .oai-fallback-value {
+  font-size: 13px; font-weight: 400; line-height: 14px; color: var(--text-2);
+}
+
+/* Fixed (not min) row height: content differences (switch vs icon+text) can no longer change a row's height. */
+.nav-item, .oai-appear-row { height: 39px; min-height: 0; padding-top: 0; padding-bottom: 0; }
+.nav-item[hidden] { display: none; }
+
+/* Ordinal superscripts (1st / 2nd) shouldn't change the row's line height. */
+.oai-fallback-row sup { font-size: 0.65em; line-height: 0; vertical-align: baseline; position: relative; top: -0.5em; }
+
+/* Expand / Collapse: a real link blue, brighter on dark themes. */
+.data-actions .data-expand-btn, .data-actions .data-expand-btn:hover { color: #0b63ce; }
+body.oai-mode-classic-dark .data-actions .data-expand-btn,
+body.oai-mode-dark .data-actions .data-expand-btn { color: #6cb4ff; }
+
+/* Softer borders in Dark and Cool for the saved-data view. */
+body.oai-mode-classic-dark, body.oai-mode-dark { --ctl-border: color-mix(in srgb, var(--text-3) 24%, transparent); }
+
+
+/* Tighter rows (was 39px): applies to every row in all four widgets. */
+.nav-item, .oai-appear-row { height: 34px; }
+
+/* Preference sliders 10% smaller (34x20 -> 31x18; thumb 16 -> 14). */
+.oai-pref-row .oai-switch-track { width: 31px; height: 18px; border-radius: 9px; }
+.oai-pref-row .oai-switch-thumb { width: 14px; height: 14px; }
+.oai-pref-row .oai-switch input:checked + .oai-switch-track .oai-switch-thumb { transform: translateX(13px); }
+
+/* Default 1 is unavailable when Open Code Pending is not in the saved Workday data. */
+.oai-pref-row--unavailable { cursor: help; }
+.oai-pref-row--unavailable > * { opacity: 0.5; } /* dim the contents, not the row, so the tooltip stays solid */
+.oai-pref-row--unavailable .oai-switch { pointer-events: none; }
+
+/* Instant tooltip that follows the cursor for any element carrying data-cursor-tip (a fixed element, so no widget clips it). */
+.oai-cursor-tip {
+  position: fixed; z-index: 99999; width: max-content; max-width: 260px; padding: 6px 9px; border-radius: 6px;
+  background: #1f2937; color: #fff; font-size: 13px; font-weight: 500; line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25); pointer-events: none; opacity: 0; transition: opacity .08s;
+}
+.oai-cursor-tip.is-visible { opacity: 1; }
+
+/* Task rows match the project heading size (12px). */
+.data-label, .data-row, .data-num { font-size: 12px; }
+
+/* No blinking text caret on popup elements; the data filter box keeps its own. */
+body { caret-color: transparent; }
+input, textarea { caret-color: auto; }
